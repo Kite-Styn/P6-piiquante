@@ -9,7 +9,6 @@ var iv = CryptoJS.enc.Hex.parse("101112131415161718191a1b1c1d1e1f");
 
 exports.signup = (req, res, next) => {
     const encryptedMail = CryptoJS.AES.encrypt(req.body.email, key, { iv: iv }).toString();
-    console.log(encryptedMail);
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
         const user = new User({
