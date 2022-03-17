@@ -24,7 +24,6 @@ exports.signup = (req, res, next) => {
 
 exports.login = (req, res, next) => {
     const encryptedMail = CryptoJS.AES.encrypt(req.body.email, key, { iv: iv }).toString();
-    console.log(encryptedMail);
     User.findOne({email: encryptedMail})
     .then(user => {
         if (!user) {

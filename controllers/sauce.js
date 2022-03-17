@@ -73,3 +73,28 @@ exports.deleteSauce = (req, res, next) => {
     })
     .catch(error => res.status(500).json({error}));
 };
+
+exports.modifyLikes = (req, res, next) => {
+    Sauce.findOne({_id: req.params.id})
+    .then((sauce) => {
+        if (req.body.like === 1) {
+            sauce.usersLiked.push(req.body.userId);
+            sauce.likes ++;
+        } else if (req.body.like === -1) {
+            sauce.usersDisliked.push(req.body.userId);
+            sauce.dislikes ++;
+        } else if (req.body.like === 0) {
+            if (sauce.usersLiked.includes(req.body.userId)) {
+                sauce.usersLiked.splice(sauce.usersLiked.findIndex(user => user === req.body.userId), 1);
+                sauce.likes --;
+            } else {
+                sauce.usersDisliked.splice(sauce.usersDisliked.findIndex(user => user === req.body.userId), 1);
+                sauce.dislikes --;
+            }
+        };
+        Sauce.updateOne({_id: req.params.id}, sauce)
+        .then(() => res.status(200).json({message: "Dis/Like enregistré"}))
+        .catch(error => res.status(400).json({error}));
+    })
+    .catch(error => res.status(500).json({error}));
+}
