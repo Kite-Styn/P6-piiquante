@@ -1,14 +1,18 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const CryptoJS = require("crypto-js");
+const sanitize = require("mongo-sanitize");
 
 const User = require("../models/User");
 
+//Key and iv for CryptoJS encryption
 var key = CryptoJS.enc.Hex.parse("000102030405060708090a0b0c0d0e0f");
 var iv = CryptoJS.enc.Hex.parse("101112131415161718191a1b1c1d1e1f");
 
+//Encrypts email with CryptoJS and hashes password with bcrypt
 exports.signup = (req, res, next) => {
-    const encryptedMail = CryptoJS.AES.encrypt(req.body.email, key, { iv: iv }).toString();
+    let cleanMail = sanitize(req.body.email);
+    const encryptedMail = CryptoJS.AES.encrypt(cleanMail, key, { iv: iv }).toString();
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
         const user = new User({
@@ -22,8 +26,10 @@ exports.signup = (req, res, next) => {
     .catch(error => res.status(500).json({error}));
 };
 
+//Compares encrypted email with CryptoJS and hashed password with bcrypt, also adds webtoken
 exports.login = (req, res, next) => {
-    const encryptedMail = CryptoJS.AES.encrypt(req.body.email, key, { iv: iv }).toString();
+    let cleanMail = sanitize(req.body.email);
+    const encryptedMail = CryptoJS.AES.encrypt(cleanMail, key, { iv: iv }).toString();
     User.findOne({email: encryptedMail})
     .then(user => {
         if (!user) {

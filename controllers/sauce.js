@@ -28,6 +28,7 @@ exports.createSauce = (req, res, next) => {
     .catch(error => res.status(400).json({error}));
 };
 
+//Ensures only the sauce creator can modify it and deletes old images being replaced
 exports.modifySauce = (req, res, next) => {
     const sauceData = req.file ?
     {
@@ -55,6 +56,7 @@ exports.modifySauce = (req, res, next) => {
     .catch(error => res.status(500).json({error}));
 };
 
+//Ensures only the sauce creator can delete it and deletes sauce and image
 exports.deleteSauce = (req, res, next) => {
     Sauce.findOne({_id: req.params.id})
     .then((sauce) => {
@@ -74,6 +76,7 @@ exports.deleteSauce = (req, res, next) => {
     .catch(error => res.status(500).json({error}));
 };
 
+//Modifies the dis/likes depending on request data
 exports.modifyLikes = (req, res, next) => {
     Sauce.findOne({_id: req.params.id})
     .then((sauce) => {
@@ -97,4 +100,4 @@ exports.modifyLikes = (req, res, next) => {
         .catch(error => res.status(400).json({error}));
     })
     .catch(error => res.status(500).json({error}));
-}
+};
