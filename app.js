@@ -9,6 +9,7 @@ const rateLimit = require("express-rate-limit");
 const userRoutes = require("./routes/user");
 const sauceRoutes = require("./routes/sauce");
 
+//Limits the number of requests for a given time per IP
 const limiter = rateLimit({
 	windowMs: 5 * 60 * 1000, // 5 minutes
 	max: 100, // Limit each IP to 100 requests per `window` (here, per 5 minutes)

@@ -2,6 +2,7 @@ const http = require('http');
 const app = require('./app');
 const path = require("path");
 const fs = require("fs");
+require ("dotenv").config();
 
 const normalizePort = val => {
     const port = parseInt(val, 10);
