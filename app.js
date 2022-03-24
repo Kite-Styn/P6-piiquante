@@ -23,8 +23,8 @@ app.use(helmet());
 app.use(limiter);
 
 mongoose.connect(`mongodb+srv://${process.env.DEV_USER}:${process.env.DEV_PASS}@cluster0.jx7ax.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,{ useNewUrlParser: true,useUnifiedTopology: true })
-.then(() => console.log('Connexion à MongoDB réussie !'))
-.catch(() => console.log('Connexion à MongoDB échouée !'));
+.then(() => console.log('Connection to MongoDB successful'))
+.catch(() => console.log('Connection to MongoDB failed'));
 
 app.use(express.json());
 
